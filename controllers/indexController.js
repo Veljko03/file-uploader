@@ -40,7 +40,17 @@ async function createNewUser(req, res, next) {
   }
 }
 
+function logOut(req, res, next) {
+  req.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("/");
+  });
+}
+
 module.exports = {
   createNewUser,
   logInPost,
+  logOut,
 };
