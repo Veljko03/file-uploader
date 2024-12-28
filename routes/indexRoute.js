@@ -27,11 +27,11 @@ const validateUser = [
     .withMessage("Passwords do not match."),
 ];
 
-indexRouter.get("/", (req, res) => res.render("index"));
+indexRouter.get("/", (req, res) => res.render("index", { user: req.user }));
 indexRouter.get("/log-in", (req, res) => res.render("log-in"));
 indexRouter.get("/sign-up", (req, res) => res.render("sign-up"));
 
 indexRouter.post("/sign-up", validateUser, indexController.createNewUser);
-indexRouter.post("log-in", checkLogIn, indexController.logInPost);
+indexRouter.post("/log-in", checkLogIn, indexController.logInPost);
 
 module.exports = indexRouter;

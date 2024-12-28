@@ -27,7 +27,7 @@ app.use(
     saveUninitialized: false,
   })
 );
-
+require("./config/passport");
 app.use(passport.session());
 app.use(index);
 app.listen(3000, () => console.log("app listening on port 3000!"));

@@ -7,8 +7,11 @@
   </head>
   <body>
     <h2>helooo</h2>
-    <p>link for signing</p>
+    <% if (!locals.user) { %>
     <a href="sign-up">Sign up</a>
     <p>link for logging <a href="log-in">Log in</a></p>
+    <% } else {%>
+    <h1>hi <%= locals.user.user_name %></h1>
+    <% } %>
   </body>
 </html>
