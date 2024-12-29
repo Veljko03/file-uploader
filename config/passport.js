@@ -13,56 +13,28 @@ passport.use(
       callbackURL: "http://localhost:3000/google/callback",
       scope: ["profile"],
     },
-    function verify(issuer, profile, cb) {
-      // pool.query(
-      //   "SELECT * FROM federated_credentials WHERE provider = ? AND subject = ?",
-      //   [issuer, profile.id],
-      //   function (err, row) {
-      //     if (err) {
-      //       return cb(err);
-      //     }
-      //     if (!row) {
-      //       db.run(
-      //         "INSERT INTO users (name) VALUES (?)",
-      //         [profile.displayName],
-      //         function (err) {
-      //           if (err) {
-      //             return cb(err);
-      //           }
-      //           var id = this.lastID;
-      //           db.run(
-      //             "INSERT INTO federated_credentials (user_id, provider, subject) VALUES (?, ?, ?)",
-      //             [id, issuer, profile.id],
-      //             function (err) {
-      //               if (err) {
-      //                 return cb(err);
-      //               }
-      //               var user = {
-      //                 id: id,
-      //                 name: profile.displayName,
-      //               };
-      //               return cb(null, user);
-      //             }
-      //           );
-      //         }
-      //       );
-      //     } else {
-      //       db.get(
-      //         "SELECT * FROM users WHERE id = ?",
-      //         [row.user_id],
-      //         function (err, row) {
-      //           if (err) {
-      //             return cb(err);
-      //           }
-      //           if (!row) {
-      //             return cb(null, false);
-      //           }
-      //           return cb(null, row);
-      //         }
-      //       );
-      //     }
-      //   }
-      // );
+    async function verify(issuer, profile, cb) {
+      try {
+        const { rows } = await pool.query(
+          "SELECT * FROM users WHERE google_id = $1",
+          [profile.id]
+        );
+
+        let user = rows[0];
+
+        if (!user) {
+          const newUser = await pool.query(
+            "INSERT INTO users (user_name, google_id) VALUES ($1, $2) RETURNING *",
+            [profile.displayName, profile.id]
+          );
+
+          user = newUser.rows[0];
+        }
+
+        return cb(null, user);
+      } catch (err) {
+        return cb(err);
+      }
     }
   )
 );

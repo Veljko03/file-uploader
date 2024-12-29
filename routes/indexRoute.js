@@ -37,7 +37,7 @@ indexRouter.get(
 );
 
 indexRouter.get(
-  "/google/auth",
+  "/google/callback",
   passport.authenticate("google", {
     successRedirect: "/protected",
     failureRedirect: "/auth/failure",
