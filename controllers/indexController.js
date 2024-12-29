@@ -4,8 +4,14 @@ const bcrypt = require("bcryptjs");
 const { validationResult, body } = require("express-validator");
 
 async function logInPost(req, res, next) {
-  console.log("dosao ovde");
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    console.log(errors);
 
+    return res.status(400).render("log-in", {
+      errors: errors.array(), // Prosledi greške view-u
+    });
+  }
   passport.authenticate("local", {
     successRedirect: "/",
     failureRedirect: "/log-in",

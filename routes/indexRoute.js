@@ -2,10 +2,11 @@ const express = require("express");
 const { body, validationResult } = require("express-validator");
 const indexController = require("../controllers/indexController");
 const indexRouter = express.Router();
+const passport = require("passport");
 
 const checkLogIn = [
-  body("email").trim().isEmail().isEmpty().withMessage("Something is incorect"),
-  body("password").trim().isEmpty().withMessage("Something is incorect"),
+  body("email").trim().isEmail().withMessage("Something is incorect"),
+  //body("password").trim().withMessage("Something is incorect"),
 ];
 const validateUser = [
   body("email").trim().isEmail().withMessage("Something is incorect"),
@@ -30,8 +31,22 @@ const validateUser = [
 indexRouter.get("/", (req, res) => res.render("index", { user: req.user }));
 indexRouter.get("/log-in", (req, res) => res.render("log-in"));
 indexRouter.get("/sign-up", (req, res) => res.render("sign-up"));
-indexRouter.get("/log-out", indexController.logOut);
+indexRouter.get(
+  "/auth/google",
+  passport.authenticate("google", { scope: ["email", "profile"] })
+);
 
+indexRouter.get(
+  "/google/auth",
+  passport.authenticate("google", {
+    successRedirect: "/protected",
+    failureRedirect: "/auth/failure",
+  })
+);
+indexRouter.get("/protected", (req, res) => res.send("usao u protected"));
+indexRouter.get("/auth/failure", (req, res) => res.send("FAILL"));
+
+indexRouter.post("/log-out", indexController.logOut);
 indexRouter.post("/sign-up", validateUser, indexController.createNewUser);
 indexRouter.post("/log-in", checkLogIn, indexController.logInPost);
 
