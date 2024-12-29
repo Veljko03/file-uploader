@@ -6,13 +6,28 @@
     <title>Document</title>
   </head>
   <body>
-    <h2>helooo</h2>
-    <% if (!locals.user) { %>
-    <a href="sign-up">Sign up</a>
-    <p>link for logging <a href="log-in">Log in</a></p>
-    <% } else {%>
-    <a href="/log-out">Log out</a>
-    <h1>hi <%= locals.user.user_name %></h1>
-    <% } %>
+    <div class="app-container">
+      <div class="header-container">
+        <h1 class="app-title">File Uploader</h1>
+        <div class="header-buttons">
+          <% if (!locals.user) { %>
+          <a href="/sign-up" class="button">Sign Up</a>
+          <a href="/log-in" class="button">Log In</a>
+          <% } else { %>
+          <a href="/main" class="button">My Folders and Files</a>
+          <a href="/shared" class="button">My Shared folders</a>
+          <a href="/log-out" class="button">Log Out</a>
+          <% } %>
+        </div>
+      </div>
+      <div class="main-container">
+        <% if (locals.user) { %> 
+          <h1>Hello <%= locals.user.user_name %></h1>
+          <p>Please feel free to explore and add some files :]</p>
+        <%} else { %>
+          <h1>Welcome to file uploader</h1>
+          <h4>log in to start </h4>
+        <% } %>
+    
   </body>
 </html>
