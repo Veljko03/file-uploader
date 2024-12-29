@@ -27,6 +27,7 @@ passport.use(
             "INSERT INTO users (user_name, google_id) VALUES ($1, $2) RETURNING *",
             [profile.displayName, profile.id]
           );
+          console.log("dodaje usera u bazu");
 
           user = newUser.rows[0];
         }

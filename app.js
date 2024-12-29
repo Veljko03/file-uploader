@@ -27,6 +27,7 @@ app.use(
     saveUninitialized: false,
   })
 );
+
 require("./config/passport");
 app.use(passport.session());
 app.use(index);
