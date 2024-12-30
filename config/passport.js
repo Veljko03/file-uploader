@@ -14,6 +14,8 @@ passport.use(
       scope: ["profile"],
     },
     async function verify(issuer, profile, cb) {
+      console.log("usaooo");
+
       try {
         const { rows } = await pool.query(
           "SELECT * FROM users WHERE google_id = $1",

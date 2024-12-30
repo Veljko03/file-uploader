@@ -13,8 +13,15 @@ async function logInPost(req, res, next) {
     });
   }
   passport.authenticate("local", {
-    successRedirect: "/",
+    successRedirect: "/drive",
     failureRedirect: "/log-in",
+  })(req, res, next);
+}
+
+function googleLogInPost(req, res, next) {
+  passport.authenticate("google", {
+    successRedirect: "/drive",
+    failureRedirect: "/auth/failure",
   })(req, res, next);
 }
 
@@ -59,4 +66,5 @@ module.exports = {
   createNewUser,
   logInPost,
   logOut,
+  googleLogInPost,
 };

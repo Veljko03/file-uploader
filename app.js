@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("node:path");
 const app = express();
 const index = require("./routes/indexRoute");
+const authRouter = require("./routes/authRoute");
 const passport = require("passport");
 const sessionMidd = require("./config/sessionMiddlewer");
 
@@ -16,4 +17,6 @@ app.use(sessionMidd);
 require("./config/passport");
 app.use(passport.session());
 app.use(index);
+app.use(authRouter);
+
 app.listen(3000, () => console.log("app listening on port 3000!"));
