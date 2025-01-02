@@ -5,8 +5,9 @@ const SQL = `
 CREATE TABLE users (
     id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     user_name VARCHAR(255),
-    email VARCHAR(100) NOT NULL UNIQUE,
-    password_hash VARCHAR(255) NOT NULL
+    google_id INT,
+    email VARCHAR(100)   UNIQUE,
+    password_hash VARCHAR(255)  
 );
 
 CREATE TABLE folders (
@@ -23,11 +24,17 @@ CREATE TABLE files (
     id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     name VARCHAR(255) NOT NULL,
     file_path TEXT NOT NULL,
-    folder_id INT,
     user_id INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (folder_id) REFERENCES folders (id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+);
+
+CREATE TABLE folders_files (
+  folder_id INT,
+  file_id INT,
+  PRIMARY KEY (folder_id,file_id),
+  FOREIGN KEY (folder_id) REFERENCES folders (id),
+  FOREIGN KEY (file_id) REFERENCES files (id),
 );
   
 `;

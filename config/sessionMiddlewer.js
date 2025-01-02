@@ -1,6 +1,5 @@
 const session = require("express-session");
 const pool = require("../db/pool");
-const e = require("express");
 
 const sessionMidd = session({
   store: new (require("connect-pg-simple")(session))({
