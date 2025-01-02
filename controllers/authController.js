@@ -13,14 +13,14 @@ async function logInPost(req, res, next) {
     });
   }
   passport.authenticate("local", {
-    successRedirect: "/drive",
+    successRedirect: "/",
     failureRedirect: "/log-in",
   })(req, res, next);
 }
 
 function googleLogInPost(req, res, next) {
   passport.authenticate("google", {
-    successRedirect: "/drive",
+    successRedirect: "/",
     failureRedirect: "/auth/failure",
   })(req, res, next);
 }

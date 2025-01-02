@@ -5,11 +5,10 @@ GET http://localhost:3000/
 GET http://localhost:3000/log-in
 
 ###
-POST http://localhost:3000/log-in
+POST http://localhost:3000/folder
 
 Content-Type: application/json
 
 {
-    "email":"marko@da.rs",
-    "password":"markomarko"
+    "name":"marko",
 }

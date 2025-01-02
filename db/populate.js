@@ -34,7 +34,7 @@ CREATE TABLE folders_files (
   file_id INT,
   PRIMARY KEY (folder_id,file_id),
   FOREIGN KEY (folder_id) REFERENCES folders (id),
-  FOREIGN KEY (file_id) REFERENCES files (id),
+  FOREIGN KEY (file_id) REFERENCES files (id)
 );
   
 `;
@@ -46,7 +46,7 @@ async function main() {
   });
 
   await client.connect();
-
+  console.log("daaaa..");
   await client.query(SQL);
   console.log("raaaaa..");
   await client.end();

@@ -1,27 +1,64 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
+    <a href="/">go back</a>
     <div class="app-container">
       <div class="header-container">
         <h1 class="app-title">File Uploader</h1>
         <div class="header-buttons">
-       
           <a href="/log-out" class="button">Log Out</a>
-      
         </div>
       </div>
       <div class="main-container">
-      <h1>Welocme to main page <%= locals.user.user_name %></h1>
+        <h1>Welocme to main page <%= locals.user.user_name %></h1>
 
-      <button>Create folder</button>
-      <button>Upload file</button>
+        <button id="createFolderBtn">Create folder</button>
+        <div id="folderModal" class="modal">
+          <h2>Add folder</h2>
+          <form action="/folder" method="post">
+            <label for="folderName">Folder name</label>
+            <input
+              type="text"
+              id="folderName"
+              name="folderName"
+              minlength="1"
+              maxlength="15"
+              required
+            />
+            <button type="submit">Create</button>
+          </form>
+        </div>
+        <button>Upload file</button>
+        <% if(folders && folders.length > 0) { %> <% folders.forEach((folder) =>
+        { %>
+        <h5><%= folder.name %></h5>
+        <% }) } %>
+      </div>
     </div>
+    <script>
+      // Get the modal
+      const modal = document.getElementById("folderModal");
+
+      // Get the button that opens the modal
+      const btn = document.getElementById("createFolderBtn");
+
+      // When the user clicks the button, open the modal
+      btn.onclick = function () {
+        modal.style.display = "block";
+      };
+
+      // When the user clicks anywhere outside of the modal, close it
+      window.onclick = function (event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      };
+    </script>
   </body>
 </html>
