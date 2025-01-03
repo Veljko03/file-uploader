@@ -19,7 +19,12 @@ const getFolderById = asyncHandler(async (req, res) => {
 });
 
 const updateFolder = asyncHandler(async (req, res) => {
-  console.log(req.params, " id controller");
+  const { folderName } = req.body;
+  const { id } = req.params;
+
+  await db.updateFolderName(folderName, id);
+
+  res.redirect("/drive");
 });
 
 module.exports = { createFolder, getFolderById, updateFolder };

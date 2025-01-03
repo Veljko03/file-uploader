@@ -15,7 +15,7 @@ async function createNewFolder(folderName, userID) {
 }
 
 async function getFolders() {
-  const a = await pool.query("SELECT * FROM folders");
+  const a = await pool.query("SELECT * FROM folders ORDER BY created_at DESC");
   return a.rows;
 }
 
@@ -24,9 +24,18 @@ async function getFolderById(id) {
   return a.rows[0];
 }
 
+async function updateFolderName(folderName, id) {
+  await pool.query("UPDATE folders SET name= $1 WHERE id =$2", [
+    folderName,
+    id,
+  ]);
+}
+
 module.exports = {
   createNewUser,
   createNewFolder,
   getFolders,
   getFolderById,
+
+  updateFolderName,
 };
