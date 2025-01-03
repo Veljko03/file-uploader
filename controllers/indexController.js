@@ -6,7 +6,9 @@ function getMainPage(req, res) {
 }
 
 const getDrive = asyncHandler(async (req, res) => {
-  const allFolders = await db.getFolders();
+  const userID = req.user.id;
+
+  const allFolders = await db.getFolders(userID);
   res.render("drive", { user: req.user, folders: allFolders });
 });
 

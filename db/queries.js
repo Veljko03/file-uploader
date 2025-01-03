@@ -14,20 +14,35 @@ async function createNewFolder(folderName, userID) {
   ]);
 }
 
-async function getFolders() {
-  const a = await pool.query("SELECT * FROM folders ORDER BY created_at DESC");
+async function getFolders(userID) {
+  console.log(userID);
+
+  const a = await pool.query(
+    "SELECT * FROM folders where user_id=$1 ORDER BY created_at DESC",
+    [userID]
+  );
   return a.rows;
 }
 
-async function getFolderById(id) {
-  const a = await pool.query("select * from folders where id = $1", [id]);
+async function getFolderById(id, userID) {
+  const a = await pool.query(
+    "select * from folders where id = $1 AND user_id=$2",
+    [id, userID]
+  );
   return a.rows[0];
 }
 
-async function updateFolderName(folderName, id) {
-  await pool.query("UPDATE folders SET name= $1 WHERE id =$2", [
+async function updateFolderName(folderName, id, userID) {
+  await pool.query("UPDATE folders SET name= $1 WHERE id =$2 ", [
     folderName,
     id,
+  ]);
+}
+
+async function deleteFolder(id, userID) {
+  await pool.query("DELETE FROM folders WHERE id = $1 AND user_id", [
+    id,
+    userID,
   ]);
 }
 
@@ -36,6 +51,6 @@ module.exports = {
   createNewFolder,
   getFolders,
   getFolderById,
-
+  deleteFolder,
   updateFolderName,
 };

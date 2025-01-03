@@ -14,10 +14,16 @@ folderRouter.get(
   folderController.getFolderById
 );
 
-folderRouter.post(
+folderRouter.get(
   "/renameFolder/:id",
   isLoggedIn,
   folderController.updateFolder
+);
+
+folderRouter.get(
+  "/deleteFolder/:id",
+  isLoggedIn,
+  folderController.deleteFolder
 );
 
 module.exports = folderRouter;

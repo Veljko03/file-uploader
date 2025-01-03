@@ -13,18 +13,26 @@ const createFolder = asyncHandler(async (req, res) => {
 
 const getFolderById = asyncHandler(async (req, res) => {
   const { id } = req.params;
-
-  const singleFolder = await db.getFolderById(id);
+  const userID = req.user.id;
+  const singleFolder = await db.getFolderById(id, userID);
   res.render("folders", { currFolder: singleFolder, childFolders: null });
 });
 
 const updateFolder = asyncHandler(async (req, res) => {
-  const { folderName } = req.body;
+  const { folderName } = req.query;
   const { id } = req.params;
+  const userID = req.user.id;
 
-  await db.updateFolderName(folderName, id);
+  await db.updateFolderName(folderName, id, userID);
 
   res.redirect("/drive");
 });
 
-module.exports = { createFolder, getFolderById, updateFolder };
+const deleteFolder = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const userID = req.user.id;
+  await db.deleteFolder(id, userID);
+  res.redirect("/drive");
+});
+
+module.exports = { createFolder, getFolderById, updateFolder, deleteFolder };
