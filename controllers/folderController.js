@@ -6,7 +6,6 @@ const createFolder = asyncHandler(async (req, res) => {
   const userID = req.user.id;
 
   await db.createNewFolder(folderName, userID);
-  const allFolders = await db.getFolders();
 
   res.redirect("drive");
 });
@@ -15,7 +14,12 @@ const getFolderById = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const userID = req.user.id;
   const singleFolder = await db.getFolderById(id, userID);
-  res.render("folders", { currFolder: singleFolder, childFolders: null });
+  const childFolders = await db.getChildFolders(id, userID);
+
+  res.render("folders", {
+    currFolder: singleFolder,
+    childFolders: childFolders,
+  });
 });
 
 const updateFolder = asyncHandler(async (req, res) => {
@@ -31,8 +35,36 @@ const updateFolder = asyncHandler(async (req, res) => {
 const deleteFolder = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const userID = req.user.id;
+
   await db.deleteFolder(id, userID);
   res.redirect("/drive");
 });
 
-module.exports = { createFolder, getFolderById, updateFolder, deleteFolder };
+const deleteFolderDiffRed = asyncHandler(async (req, res) => {
+  const parentID = req.params.id;
+  const toDeleteID = req.params.id2;
+
+  const userID = req.user.id;
+
+  await db.deleteFolder(toDeleteID, userID);
+  res.redirect(`/drive/folder/${parentID}`);
+});
+
+const createFolderWithParent = asyncHandler(async (req, res) => {
+  const parentID = req.params.id;
+  const userID = req.user.id;
+  const { folderName } = req.body;
+
+  await db.createFolderWParent(folderName, parentID, userID);
+
+  res.redirect(`/drive/folder/${parentID}`);
+});
+
+module.exports = {
+  createFolder,
+  getFolderById,
+  updateFolder,
+  deleteFolder,
+  createFolderWithParent,
+  deleteFolderDiffRed,
+};

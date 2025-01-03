@@ -18,7 +18,7 @@ async function getFolders(userID) {
   console.log(userID);
 
   const a = await pool.query(
-    "SELECT * FROM folders where user_id=$1 ORDER BY created_at DESC",
+    "SELECT * FROM folders where user_id=$1 and parent_folder_id is null ORDER BY created_at DESC",
     [userID]
   );
   return a.rows;
@@ -40,10 +40,26 @@ async function updateFolderName(folderName, id, userID) {
 }
 
 async function deleteFolder(id, userID) {
-  await pool.query("DELETE FROM folders WHERE id = $1 AND user_id", [
+  await pool.query("DELETE FROM folders WHERE id = $1 AND user_id=$2", [
     id,
     userID,
   ]);
+}
+
+async function createFolderWParent(name, parentID, userID) {
+  const a = await pool.query(
+    "INSERT INTO folders (name,parent_folder_id,user_id) VALUES ($1,$2,$3)",
+    [name, parentID, userID]
+  );
+  return a.rows;
+}
+
+async function getChildFolders(id, userID) {
+  const a = await pool.query(
+    "SELECT * FROM folders WHERE parent_folder_id = $1 AND user_id=$2",
+    [id, userID]
+  );
+  return a.rows;
 }
 
 module.exports = {
@@ -53,4 +69,6 @@ module.exports = {
   getFolderById,
   deleteFolder,
   updateFolderName,
+  createFolderWParent,
+  getChildFolders,
 };

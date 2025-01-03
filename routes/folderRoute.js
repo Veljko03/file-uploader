@@ -8,6 +8,11 @@ function isLoggedIn(req, res, next) {
 
 folderRouter.post("/folder", isLoggedIn, folderController.createFolder);
 
+folderRouter.post(
+  "/drive/folder/:id",
+  isLoggedIn,
+  folderController.createFolderWithParent
+);
 folderRouter.get(
   "/drive/folder/:id",
   isLoggedIn,
@@ -24,6 +29,12 @@ folderRouter.get(
   "/deleteFolder/:id",
   isLoggedIn,
   folderController.deleteFolder
+);
+
+folderRouter.get(
+  "/deleteFolderInFolder/:id/:id2",
+  isLoggedIn,
+  folderController.deleteFolderDiffRed
 );
 
 module.exports = folderRouter;

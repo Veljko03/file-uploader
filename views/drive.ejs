@@ -59,6 +59,7 @@
               />
               <button type="submit">Submit</button>
             </form>
+            <button class="closeBtn">close</button>
           </div>
           ----------------------
           <a href="/deleteFolder/<%=folder.id %>">Delete</a>
@@ -69,7 +70,7 @@
     <script>
       // Get the modal
       const addFolderModal = document.getElementById("folderModal");
-
+      const closeBtn = document.getElementsByClassName("closeBtn");
       const updateFolderModal = document.querySelectorAll(".updateFolderModal");
       const renameBtn = document.getElementsByClassName("renameBtn");
       // Get the button that opens the modal
@@ -79,6 +80,16 @@
         renameBtn[i].onclick = function () {
           setTimeout(() => {
             updateFolderModal[i].style.display = "block";
+          }, 0);
+        };
+      }
+
+      for (let i = 0; i < closeBtn.length; i++) {
+        closeBtn[i].onclick = function () {
+          console.log("usaaa");
+
+          setTimeout(() => {
+            updateFolderModal[i].style.display = "none";
           }, 0);
         };
       }
@@ -96,11 +107,19 @@
           event.target == updateFolderModal
         ) {
           addFolderModal.style.display = "none";
-          for (let i = 0; i <= updateFolderModal.length - 1; i++) {
-            updateFolderModal[i].style.display = "none";
-          }
         }
       };
+
+      // window.onclick = function(e){
+      //   for (let i = 0; i <= updateFolderModal.length - 1; i++) {
+      //     if(e.target == updateFolderModal[i]){
+
+      //     }
+      //       setTimeout(() => {
+      //         updateFolderModal[i].style.display = "none";
+      //       }, 0);
+      //     }
+      // }
     </script>
   </body>
 </html>

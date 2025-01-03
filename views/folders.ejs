@@ -27,7 +27,7 @@
         <button id="createFolderBtn">Create folder</button>
         <div id="folderModal" class="modal">
           <h2>Add folder</h2>
-          <form action="/folder" method="post">
+          <form action="/drive/folder/<%=currFolder.id %>" method="post">
             <label for="folderName">Folder name</label>
             <input
               type="text"
@@ -41,10 +41,38 @@
           </form>
         </div>
         <button>Upload file</button>
-
-        <% if(childFolders && childFolders.length > 0) { %> <%
-        childFolders.forEach((folder) => { %>
-        <button><%= folder.name %></button>
+        <br /><br />
+        <% if(childFolders && childFolders.length > 0) { %>
+        <h2>Here are your sub-folders</h2>
+        <% childFolders.forEach((folder) => { %> id: <%=folder.id %>
+        <h5>
+          <%= folder.name %> -----------------------
+          <a href="/drive/folder/<%=folder.id %>">open</a>---------------<button
+            class="renameBtn"
+          >
+            rename
+          </button>
+          <div class="updateFolderModal">
+            <h2>Change folder name</h2>
+            <form action="/renameFolder/<%=folder.id %>" method="get">
+              <label for="folderName">New Folder name</label>
+              <input
+                type="text"
+                id="folderName"
+                name="folderName"
+                minlength="1"
+                maxlength="15"
+                required
+              />
+              <button type="submit">Submit</button>
+            </form>
+            <button class="closeBtn">close</button>
+          </div>
+          ----------------------
+          <a href="/deleteFolderInFolder/<%=currFolder.id %>/<%=folder.id %>"
+            >Delete</a
+          >
+        </h5>
         <% }) } else { %>
         <h3>No files in folder</h3>
         <%} %>
