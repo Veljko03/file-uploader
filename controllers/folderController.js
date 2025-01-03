@@ -29,7 +29,9 @@ const updateFolder = asyncHandler(async (req, res) => {
 
   await db.updateFolderName(folderName, id, userID);
 
-  res.redirect("/drive");
+  const folder = await db.getFolderById(id, userID);
+
+  res.redirect(`/drive/folder/${folder.parent_folder_id}`);
 });
 
 const deleteFolder = asyncHandler(async (req, res) => {

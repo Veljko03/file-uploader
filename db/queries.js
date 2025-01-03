@@ -62,6 +62,14 @@ async function getChildFolders(id, userID) {
   return a.rows;
 }
 
+async function getParentName(id, user) {
+  const a = await pool.query(
+    "SELECT * from folders f inner join folders r on f.parent_folder_id = r.id where r.id=$1 and r.user_id=$2 ",
+    [id, user]
+  );
+  console.log(a);
+}
+
 module.exports = {
   createNewUser,
   createNewFolder,
@@ -71,4 +79,5 @@ module.exports = {
   updateFolderName,
   createFolderWParent,
   getChildFolders,
+  getParentName,
 };

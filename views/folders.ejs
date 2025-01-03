@@ -18,6 +18,7 @@
       <div class="main-container">
         <h1>Welocme to folders</h1>
         <a href="/drive">My drive</a> ...>...
+
         <a href=""><%= currFolder.name %></a>
         <br />
         <br />
@@ -81,8 +82,29 @@
     <script>
       // Get the modal
       const addFolderModal = document.getElementById("folderModal");
-
+      const closeBtn = document.getElementsByClassName("closeBtn");
+      const updateFolderModal = document.querySelectorAll(".updateFolderModal");
+      const renameBtn = document.getElementsByClassName("renameBtn");
+      // Get the button that opens the modal
       const btnAddFolder = document.getElementById("createFolderBtn");
+
+      for (let i = 0; i < renameBtn.length; i++) {
+        renameBtn[i].onclick = function () {
+          setTimeout(() => {
+            updateFolderModal[i].style.display = "block";
+          }, 0);
+        };
+      }
+
+      for (let i = 0; i < closeBtn.length; i++) {
+        closeBtn[i].onclick = function () {
+          console.log("usaaa");
+
+          setTimeout(() => {
+            updateFolderModal[i].style.display = "none";
+          }, 0);
+        };
+      }
 
       btnAddFolder.onclick = function () {
         console.log(addFolderModal);
@@ -92,7 +114,10 @@
 
       // When the user clicks anywhere outside of the modal, close it
       window.onclick = function (event) {
-        if (event.target == addFolderModal) {
+        if (
+          event.target == addFolderModal ||
+          event.target == updateFolderModal
+        ) {
           addFolderModal.style.display = "none";
         }
       };
