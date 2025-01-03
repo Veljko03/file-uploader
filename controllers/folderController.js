@@ -13,10 +13,13 @@ const createFolder = asyncHandler(async (req, res) => {
 
 const getFolderById = asyncHandler(async (req, res) => {
   const { id } = req.params;
-  console.log(req.params, " id controller");
 
   const singleFolder = await db.getFolderById(id);
   res.render("folders", { currFolder: singleFolder, childFolders: null });
 });
 
-module.exports = { createFolder, getFolderById };
+const updateFolder = asyncHandler(async (req, res) => {
+  console.log(req.params, " id controller");
+});
+
+module.exports = { createFolder, getFolderById, updateFolder };

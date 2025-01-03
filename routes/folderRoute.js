@@ -14,4 +14,10 @@ folderRouter.get(
   folderController.getFolderById
 );
 
+folderRouter.put(
+  "/renameFolder/:id",
+  isLoggedIn,
+  folderController.updateFolder
+);
+
 module.exports = folderRouter;
