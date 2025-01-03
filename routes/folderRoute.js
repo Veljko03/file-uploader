@@ -14,7 +14,7 @@ folderRouter.get(
   folderController.getFolderById
 );
 
-folderRouter.put(
+folderRouter.get(
   "/renameFolder/:id",
   isLoggedIn,
   folderController.updateFolder

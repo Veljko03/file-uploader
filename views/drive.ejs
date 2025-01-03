@@ -45,10 +45,10 @@
           >
             rename
           </button>
-          <div id="updateFolderModal" class="modal">
+          <div class="updateFolderModal">
             <h2>Change folder name</h2>
             <form action="/renameFolder/<%=folder.id %>" method="put">
-              <label for="folderName">Folder name</label>
+              <label for="folderName">New Folder name</label>
               <input
                 type="text"
                 id="folderName"
@@ -70,25 +70,21 @@
       // Get the modal
       const addFolderModal = document.getElementById("folderModal");
 
-      const updateFolderModal = document.getElementById("updateFolderModal");
+      const updateFolderModal = document.querySelectorAll(".updateFolderModal");
       const renameBtn = document.getElementsByClassName("renameBtn");
-      console.log(renameBtn, "rename btn");
-
       // Get the button that opens the modal
       const btnAddFolder = document.getElementById("createFolderBtn");
-      console.log(btnAddFolder, "sffd btn");
-      console.log(renameBtn[0], " prvi");
 
-      for (let i = 0; i <= renameBtn.length - 1; i++) {
+      for (let i = 0; i < renameBtn.length; i++) {
         renameBtn[i].onclick = function () {
-          console.log("Raaaaaaaa");
-
-          updateFolderModal.style.display = "block";
+          setTimeout(() => {
+            updateFolderModal[i].style.display = "block";
+          }, 0);
         };
       }
 
       btnAddFolder.onclick = function () {
-        console.log("1111");
+        console.log(addFolderModal);
 
         addFolderModal.style.display = "block";
       };
@@ -100,7 +96,9 @@
           event.target == updateFolderModal
         ) {
           addFolderModal.style.display = "none";
-          updateFolderModal.style.display = "none";
+          for (let i = 0; i <= updateFolderModal.length - 1; i++) {
+            updateFolderModal[i].style.display = "none";
+          }
         }
       };
     </script>

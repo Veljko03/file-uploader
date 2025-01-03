@@ -21,10 +21,13 @@
         <a href=""><%= currFolder.name %></a>
         <br />
         <br />
+
+        <br />
+        <br />
         <button id="createFolderBtn">Create folder</button>
         <div id="folderModal" class="modal">
           <h2>Add folder</h2>
-          <form action="/folder" method="post">
+          <form action="/folder" method="get">
             <label for="folderName">Folder name</label>
             <input
               type="text"
@@ -49,20 +52,20 @@
     </div>
     <script>
       // Get the modal
-      const modal = document.getElementById("folderModal");
+      const addFolderModal = document.getElementById("folderModal");
 
-      // Get the button that opens the modal
-      const btn = document.getElementById("createFolderBtn");
+      const btnAddFolder = document.getElementById("createFolderBtn");
 
-      // When the user clicks the button, open the modal
-      btn.onclick = function () {
-        modal.style.display = "block";
+      btnAddFolder.onclick = function () {
+        console.log(addFolderModal);
+
+        addFolderModal.style.display = "block";
       };
 
       // When the user clicks anywhere outside of the modal, close it
       window.onclick = function (event) {
-        if (event.target == modal) {
-          modal.style.display = "none";
+        if (event.target == addFolderModal) {
+          addFolderModal.style.display = "none";
         }
       };
     </script>
