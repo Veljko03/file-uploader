@@ -2,8 +2,9 @@ const db = require("../db/queries");
 const passport = require("passport");
 const bcrypt = require("bcryptjs");
 const { validationResult, body } = require("express-validator");
+const asyncHandler = require("express-async-handler");
 
-async function logInPost(req, res, next) {
+const logInPost = asyncHandler(async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     console.log(errors);
@@ -16,7 +17,7 @@ async function logInPost(req, res, next) {
     successRedirect: "/",
     failureRedirect: "/log-in",
   })(req, res, next);
-}
+});
 
 function googleLogInPost(req, res, next) {
   passport.authenticate("google", {
@@ -25,7 +26,7 @@ function googleLogInPost(req, res, next) {
   })(req, res, next);
 }
 
-async function createNewUser(req, res, next) {
+const createNewUser = asyncHandler(async (req, res, next) => {
   const errors = validationResult(req);
 
   // Ako validacija ima greške, prikaži ih korisniku
@@ -39,19 +40,15 @@ async function createNewUser(req, res, next) {
   const { email, username, password, confirm } = req.body;
   console.log(req.body);
 
-  try {
-    bcrypt.hash(password, 10, async (err, hashedPassword) => {
-      if (err) {
-        return;
-      }
-      await db.createNewUser(email, username, hashedPassword);
-    });
+  bcrypt.hash(password, 10, async (err, hashedPassword) => {
+    if (err) {
+      return;
+    }
+    await db.createNewUser(email, username, hashedPassword);
+  });
 
-    res.redirect("/log-in");
-  } catch (err) {
-    return next(err);
-  }
-}
+  res.redirect("/log-in");
+});
 
 function logOut(req, res, next) {
   req.logout((err) => {

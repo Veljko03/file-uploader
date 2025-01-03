@@ -37,7 +37,14 @@
         <button>Upload file</button>
         <% if(folders && folders.length > 0) { %> <% folders.forEach((folder) =>
         { %>
-        <h5><%= folder.name %></h5>
+        <h5>
+          <%= folder.name %> -----------------------
+          <a href="/drive/folder/<%=folder.id %>">open</a>---------------<a
+            href="/renameFolder"
+            >rename</a
+          >
+          ---------------------- <a href="/deleteFolder">Delete</a>
+        </h5>
         <% }) } %>
       </div>
     </div>

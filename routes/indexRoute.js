@@ -9,6 +9,6 @@ function isLoggedIn(req, res, next) {
 indexRouter.get("/", indexController.getMainPage);
 indexRouter.get("/drive", isLoggedIn, indexController.getDrive);
 
-indexRouter.post("/folder", indexController.createFolder);
+//indexRouter.post("/folder", indexController.createFolder);
 
 module.exports = indexRouter;
