@@ -1,4 +1,5 @@
-#folderModal {
+#folderModal,
+#fileModal {
   position: fixed;
   display: none;
   justify-items: center;

@@ -35,7 +35,17 @@
           </form>
         </div>
 
-        <button>Upload file</button>
+        <button id="uploadFileBtn">Upload file</button>
+        <div id="fileModal" class="modal">
+          <h2>Upload file</h2>
+          <br />
+          <form action="/drive/file" method="post">
+            <input type="file" id="myFile" name="filename" />
+            <br /><br /><br />
+
+            <input type="submit" />
+          </form>
+        </div>
         <% if(folders && folders.length > 0) { %> <% folders.forEach((folder) =>
         { %>
         <h5>
@@ -75,6 +85,9 @@
       const renameBtn = document.getElementsByClassName("renameBtn");
       // Get the button that opens the modal
       const btnAddFolder = document.getElementById("createFolderBtn");
+      const uploadFile = document.getElementById("myFile");
+      const uploadFileBtn = document.getElementById("uploadFileBtn");
+      const fileModal = document.getElementById("fileModal");
 
       for (let i = 0; i < renameBtn.length; i++) {
         renameBtn[i].onclick = function () {
@@ -83,6 +96,14 @@
           }, 0);
         };
       }
+
+      uploadFile.onchange = function () {
+        console.log("promena");
+        if (this.files[0].size > 1048576) {
+          alert("file is larger than 1mb, try again with smaller one :)");
+          this.value = "";
+        }
+      };
 
       for (let i = 0; i < closeBtn.length; i++) {
         closeBtn[i].onclick = function () {
@@ -93,7 +114,14 @@
           }, 0);
         };
       }
+      console.log("aaaaaaaa", uploadFileBtn);
 
+      uploadFileBtn.onclick = function () {
+        console.log(uploadFileBtn);
+        console.log(fileModal);
+
+        fileModal.style.display = "block";
+      };
       btnAddFolder.onclick = function () {
         console.log(addFolderModal);
 
@@ -102,11 +130,9 @@
 
       // When the user clicks anywhere outside of the modal, close it
       window.onclick = function (event) {
-        if (
-          event.target == addFolderModal ||
-          event.target == updateFolderModal
-        ) {
+        if (event.target == addFolderModal || event.target == fileModal) {
           addFolderModal.style.display = "none";
+          fileModal.style.display = "none";
         }
       };
 
