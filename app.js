@@ -6,6 +6,7 @@ const authRouter = require("./routes/authRoute");
 const passport = require("passport");
 const sessionMidd = require("./config/sessionMiddlewer");
 const folderRouter = require("./routes/folderRoute");
+const fileRouter = require("./routes/fileRouter");
 
 app.use(express.urlencoded({ extended: false }));
 
@@ -20,5 +21,7 @@ app.use(passport.session());
 app.use(index);
 app.use(authRouter);
 app.use(folderRouter);
+
+app.use(fileRouter);
 
 app.listen(3000, () => console.log("app listening on port 3000!"));

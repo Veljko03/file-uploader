@@ -39,11 +39,14 @@
         <div id="fileModal" class="modal">
           <h2>Upload file</h2>
           <br />
-          <form action="/drive/file" method="post">
+          <form
+            action="/uploadFile"
+            method="post"
+            enctype="multipart/form-data"
+          >
             <input type="file" id="myFile" name="filename" />
-            <br /><br /><br />
 
-            <input type="submit" />
+            <button type="submit">Submit</button>
           </form>
         </div>
         <% if(folders && folders.length > 0) { %> <% folders.forEach((folder) =>
