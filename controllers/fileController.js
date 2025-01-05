@@ -1,7 +1,11 @@
+const pool = require("../db/pool");
 const db = require("../db/queries");
 
-function createFile(req, res) {
-  const { originalname, path, size } = req.file;
+async function createFile(req, res) {
+  const { originalname, path } = req.file;
+  const userID = req.user.id;
+
+  await db.createFile(originalname, path, userID);
   res.redirect("/drive");
 }
 
