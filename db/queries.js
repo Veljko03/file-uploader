@@ -76,14 +76,14 @@ async function createFile(originalname, path, userID) {
     "INSERT INTO files (name,file_path,user_id) VALUES ($1,$2,$3)",
     [originalname, path, userID]
   );
+}
 
-  async function getFiles(userID) {
-    const a = await pool.query(
-      "SELECT * FROM files where user_id = $1 and folder_id is null ORDER BY created_at DESC",
-      [userID]
-    );
-    return a;
-  }
+async function getFiles(userID) {
+  const a = await pool.query(
+    "SELECT * FROM files where user_id = $1 and folder_id is null ORDER BY created_at DESC",
+    [userID]
+  );
+  return a.rows;
 }
 
 module.exports = {
