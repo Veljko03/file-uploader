@@ -43,6 +43,7 @@ fileRouter.get(
   isLoggedIn,
   fileController.deleteFileFromFolder
 );
-//fileRouter.get("/getFile/:id", isLoggedIn, fileController.getFileById);
+
+fileRouter.get("/getFile/:id", isLoggedIn, fileController.getFileById);
 
 module.exports = fileRouter;

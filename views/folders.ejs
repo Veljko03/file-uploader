@@ -57,7 +57,7 @@
         </div>
         <br /><br />
         <% if(childFolders && childFolders.length > 0) { %>
-        <h2>Here are your sub-folders</h2>
+        <h2>Folders:</h2>
         <% childFolders.forEach((folder) => { %> id: <%=folder.id %>
         <h5>
           <%= folder.name %> -----------------------
@@ -93,6 +93,7 @@
 
         <h5>
           <%= file.name %> , size: <%= file.size %>-----------------------
+          <!-- <a href="/getFile/<%=file.id %>">open</a>--------------- -->
           <a href="/getFile/<%=file.id %>">open</a>---------------
           <a href="/deleteFileFromFolder/<%=file.id %>/<%=currFolder.id %>"
             >Delete</a
@@ -112,6 +113,15 @@
       const uploadFile = document.getElementById("myFile");
       const uploadFileBtn = document.getElementById("uploadFileBtn");
       const fileModal = document.getElementById("fileModal");
+      const openFileBtn = document.getElementsByClassName("openFileBtn");
+
+      console.log(openFileBtn);
+
+      for (let i = 0; i < openFileBtn.length; i++) {
+        openFileBtn[i].onclick = function () {
+          console.log(openFileBtn[i], " valueee");
+        };
+      }
 
       for (let i = 0; i < renameBtn.length; i++) {
         renameBtn[i].onclick = function () {

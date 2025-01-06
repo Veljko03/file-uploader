@@ -1,5 +1,7 @@
+const path = require("path");
 const pool = require("../db/pool");
 const db = require("../db/queries");
+const fs = require("fs");
 
 async function createFile(req, res) {
   const { originalname, path } = req.file;
@@ -44,6 +46,15 @@ async function getFileById(req, res) {
   const userId = req.user.id;
   const { id } = req.params;
   const file = await db.getFileById(id, userId);
+  console.log("file ", file);
+
+  const filePath = path.join(__dirname, "../", file.file_path); // Kreira apsolutnu putanju do fajla
+
+  if (!fs.existsSync(filePath)) {
+    return res.status(404).json({ error: "File not found on the server" });
+  }
+
+  res.sendFile(filePath);
 }
 
 // fieldname: 'filename',
@@ -59,4 +70,5 @@ module.exports = {
   createFileInFolder,
   deleteFile,
   deleteFileFromFolder,
+  getFileById,
 };

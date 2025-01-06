@@ -99,6 +99,7 @@ async function getFileById(id, userID) {
     id,
     userID,
   ]);
+  console.log(a.rows[0]);
 
   return a.rows[0];
 }
