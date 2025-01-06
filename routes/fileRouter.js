@@ -29,4 +29,13 @@ fileRouter.post(
   fileController.createFile
 );
 
+fileRouter.post(
+  "/uploadFileInFolder/:id",
+  isLoggedIn,
+  upload.single("filename"),
+  fileController.createFileInFolder
+);
+
+//fileRouter.get("/getFile/:id", isLoggedIn, fileController.getFileById);
+
 module.exports = fileRouter;

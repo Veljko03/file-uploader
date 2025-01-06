@@ -86,6 +86,30 @@ async function getFiles(userID) {
   return a.rows;
 }
 
+async function getFilesFromFolder(userID, folder_id) {
+  const a = await pool.query(
+    "SELECT * FROM files where user_id = $1 and folder_id=$2 ORDER BY created_at DESC",
+    [userID, folder_id]
+  );
+  return a.rows;
+}
+
+async function getFileById(id, userID) {
+  const a = await pool.query("SELECT * FROM files where id=$1 and user_id=$2", [
+    id,
+    userID,
+  ]);
+
+  return a.rows[0];
+}
+
+async function createFileInFolder(originalname, path, userID, folderId) {
+  await pool.query(
+    "INSERT INTO files (name,file_path,user_id,folder_id) VALUES ($1,$2,$3,$4)",
+    [originalname, path, userID, folderId]
+  );
+}
+
 module.exports = {
   createNewUser,
   createNewFolder,
@@ -98,4 +122,7 @@ module.exports = {
   getParentName,
   createFile,
   getFiles,
+  getFileById,
+  getFilesFromFolder,
+  createFileInFolder,
 };

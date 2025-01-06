@@ -15,10 +15,12 @@ const getFolderById = asyncHandler(async (req, res) => {
   const userID = req.user.id;
   const singleFolder = await db.getFolderById(id, userID);
   const childFolders = await db.getChildFolders(id, userID);
+  const childFiles = await db.getFilesFromFolder(userID, id);
 
   res.render("folders", {
     currFolder: singleFolder,
     childFolders: childFolders,
+    files: childFiles,
   });
 });
 
