@@ -36,6 +36,13 @@ fileRouter.post(
   fileController.createFileInFolder
 );
 
+fileRouter.get("/deleteFile/:id", isLoggedIn, fileController.deleteFile);
+
+fileRouter.get(
+  "/deleteFileFromFolder/:id/:id2",
+  isLoggedIn,
+  fileController.deleteFileFromFolder
+);
 //fileRouter.get("/getFile/:id", isLoggedIn, fileController.getFileById);
 
 module.exports = fileRouter;

@@ -21,6 +21,25 @@ async function createFileInFolder(req, res) {
   res.redirect(`/drive/folder/${folderId}`);
 }
 
+async function deleteFile(req, res) {
+  const userID = req.user.id;
+  const fileId = req.params.id;
+
+  await db.deleteFile(fileId, userID);
+
+  res.redirect("/drive");
+}
+
+async function deleteFileFromFolder(req, res) {
+  const userID = req.user.id;
+  const fileId = req.params.id;
+  const folderId = req.params.id2;
+
+  await db.deleteFile(fileId, userID);
+
+  res.redirect(`/drive/folder/${folderId}`);
+}
+
 async function getFileById(req, res) {
   const userId = req.user.id;
   const { id } = req.params;
@@ -35,4 +54,9 @@ async function getFileById(req, res) {
 //   filename: '51b5e7decd1cd74dd1a08feb49f5597b',
 //   path: 'uploads/51b5e7decd1cd74dd1a08feb49f5597b',
 //   size: 386021
-module.exports = { createFile, createFileInFolder };
+module.exports = {
+  createFile,
+  createFileInFolder,
+  deleteFile,
+  deleteFileFromFolder,
+};

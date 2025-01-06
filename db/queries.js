@@ -110,6 +110,13 @@ async function createFileInFolder(originalname, path, userID, folderId) {
   );
 }
 
+async function deleteFile(id, user_id) {
+  await pool.query("DELETE FROM files where id=$1 and user_id=$2", [
+    id,
+    user_id,
+  ]);
+}
+
 module.exports = {
   createNewUser,
   createNewFolder,
@@ -125,4 +132,5 @@ module.exports = {
   getFileById,
   getFilesFromFolder,
   createFileInFolder,
+  deleteFile,
 };
