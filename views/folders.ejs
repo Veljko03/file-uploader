@@ -93,11 +93,11 @@
 
         <h5>
           <%= file.name %> , size: <%= file.size %>-----------------------
-          <!-- <a href="/getFile/<%=file.id %>">open</a>--------------- -->
           <a href="/getFile/<%=file.id %>">open</a>---------------
           <a href="/deleteFileFromFolder/<%=file.id %>/<%=currFolder.id %>"
             >Delete</a
-          >
+          >------------------------------------
+          <a href="/download/<%=file.id %>">Download</a>
         </h5>
         <% }) } %>
       </div>

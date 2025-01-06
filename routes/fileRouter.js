@@ -45,5 +45,6 @@ fileRouter.get(
 );
 
 fileRouter.get("/getFile/:id", isLoggedIn, fileController.getFileById);
+fileRouter.get("/download/:id", isLoggedIn, fileController.downloadFile);
 
 module.exports = fileRouter;

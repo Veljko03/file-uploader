@@ -57,6 +57,20 @@ async function getFileById(req, res) {
   res.sendFile(filePath);
 }
 
+async function downloadFile(req, res) {
+  const userId = req.user.id;
+  const { id } = req.params;
+  const file = await db.getFileById(id, userId);
+
+  const filePath = path.join(__dirname, "../", file.file_path); // Kreira apsolutnu putanju do fajla
+
+  if (!fs.existsSync(filePath)) {
+    return res.status(404).json({ error: "File not found on the server" });
+  }
+
+  res.download(filePath);
+}
+
 // fieldname: 'filename',
 //   originalname: 'ghuts.jpg',
 //   encoding: '7bit',
@@ -71,4 +85,5 @@ module.exports = {
   deleteFile,
   deleteFileFromFolder,
   getFileById,
+  downloadFile,
 };
