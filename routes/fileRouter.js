@@ -29,7 +29,9 @@ const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
     folder: "uploads",
-    public_id: (req, file) => Date.now() + "-" + file.originalname,
+
+    public_id: (req, file) => Date.now() + path.extname(file.originalname),
+    resource_type: "auto",
   },
 });
 const upload = multer({ storage: storage });
