@@ -33,9 +33,10 @@ async function getFolderById(id, userID) {
 }
 
 async function updateFolderName(folderName, id, userID) {
-  await pool.query("UPDATE folders SET name= $1 WHERE id =$2 ", [
+  await pool.query("UPDATE folders SET name= $1 WHERE id =$2 and user_id=$3 ", [
     folderName,
     id,
+    userID,
   ]);
 }
 

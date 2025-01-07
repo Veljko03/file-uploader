@@ -26,6 +26,7 @@ CREATE TABLE files (
     file_path TEXT NOT NULL,
     user_id INT NOT NULL,
     folder_id INT,
+    public_id VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
     FOREIGN KEY (folder_id) REFERENCES folders (id) ON DELETE CASCADE

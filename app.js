@@ -24,4 +24,8 @@ app.use(folderRouter);
 
 app.use(fileRouter);
 
+app.use((err, req, res, next) => {
+  res.status(500).send(err);
+});
+
 app.listen(3000, () => console.log("app listening on port 3000!"));

@@ -1,14 +1,35 @@
 const express = require("express");
-
-const multer = require("multer");
+require("dotenv").config();
 const fileController = require("../controllers/fileController");
 const path = require("path");
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads/");
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname)); //Appending extension
+// const storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, "uploads/");
+//   },
+//   filename: function (req, file, cb) {
+//     cb(null, Date.now() + path.extname(file.originalname)); //Appending extension
+//   },
+// });
+// const storage = new CloudinaryStorage({
+//   cloudinary,
+// });
+
+// const upload = multer({ storage: storage });
+
+const multer = require("multer");
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const cloudinary = require("cloudinary").v2;
+
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_KEY_SECRET,
+});
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: "uploads",
+    public_id: (req, file) => Date.now() + "-" + file.originalname,
   },
 });
 const upload = multer({ storage: storage });
