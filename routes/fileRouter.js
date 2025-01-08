@@ -34,6 +34,7 @@ const storage = new CloudinaryStorage({
     resource_type: "auto",
   },
 });
+
 const upload = multer({ storage: storage, limits: { fieldSize: 1024 * 1024 } });
 
 const fileRouter = express.Router();
@@ -68,6 +69,6 @@ fileRouter.get(
 );
 
 fileRouter.get("/getFile/:id", isLoggedIn, fileController.getFileById);
-fileRouter.post("/download/:id", isLoggedIn, fileController.downloadFile);
+fileRouter.get("/download/:id", isLoggedIn, fileController.downloadFile);
 
 module.exports = fileRouter;

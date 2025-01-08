@@ -86,7 +86,10 @@
           <%= file.name %> , size: <%= file.size %>-----------------------
           <a href="/getFile/<%=file.id %>">open</a>---------------
           <a href="/deleteFile/<%=file.id %>">Delete</a>----------
-          <a href="/download/<%=file.id %>">Download</a>
+          <button class="downloadBtn" data-file-path="<%=file.file_path %>">
+            Download
+          </button>
+          <!-- <a href="/download/<%=file.id %>">Download</a> -->
           <!-- <a id="downloadLink" href="<%=file.file_path %>" target="_blank"
             >Download</a
           > -->
@@ -105,6 +108,39 @@
       const uploadFile = document.getElementById("myFile");
       const uploadFileBtn = document.getElementById("uploadFileBtn");
       const fileModal = document.getElementById("fileModal");
+      const downloadFileBtns = document.querySelectorAll(".downloadBtn");
+
+      downloadFileBtns.forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          const filePath = btn.getAttribute("data-file-path");
+
+          fetch(filePath)
+            .then((res) => {
+              if (!res.ok) {
+                throw new Error("Network Problem");
+              }
+              return res.blob();
+            })
+            .then((file) => {
+              const fileNameParts = filePath.split("/");
+              const originalFileName = fileNameParts[fileNameParts.length - 1];
+              const fileExtension = originalFileName.split(".").pop();
+
+              // Pravljenje objekta za preuzimanje
+              const tempUrl = URL.createObjectURL(file);
+              const downloadLink = document.createElement("a");
+              downloadLink.href = tempUrl;
+              downloadLink.download = `downloaded_file.${fileExtension}`; // Ime preuzetog fajla
+              document.body.appendChild(downloadLink);
+              downloadLink.click();
+              URL.revokeObjectURL(tempUrl);
+              downloadLink.remove();
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        });
+      });
 
       for (let i = 0; i < renameBtn.length; i++) {
         renameBtn[i].onclick = function () {

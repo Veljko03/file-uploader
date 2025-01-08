@@ -4,6 +4,12 @@ const db = require("../db/queries");
 const fs = require("fs");
 const { log } = require("console");
 const cloudinary = require("cloudinary").v2;
+require("dotenv").config;
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_KEY_SECRET,
+});
 
 async function createFile(req, res) {
   const { originalname, path, filename } = req.file;
@@ -88,20 +94,12 @@ async function downloadFile(req, res) {
     return res.status(404).json({ error: "File not found" });
   }
   try {
-    const response = await fetch(file.file_path);
-
-    if (!response.ok) {
-      return res.status(404).send("File not found");
-    }
-
     const downloadUrl = cloudinary.url(file.public_id, {
-      resource_type: fileType,
+      resource_type: "auto",
       flags: "attachment",
       attachment: file.name,
     });
-    res.status(200).json({
-      downloadUrl,
-    });
+    res.download(file.file_path);
   } catch (err) {
     console.error(err);
     res.status(500).send("Error downloading file");
