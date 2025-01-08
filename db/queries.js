@@ -72,10 +72,10 @@ async function getParentName(id, user) {
 }
 
 //FILES
-async function createFile(originalname, path, userID) {
+async function createFile(originalname, path, userID, filename) {
   await pool.query(
-    "INSERT INTO files (name,file_path,user_id) VALUES ($1,$2,$3)",
-    [originalname, path, userID]
+    "INSERT INTO files (name,file_path,user_id,public_id) VALUES ($1,$2,$3,$4)",
+    [originalname, path, userID, filename]
   );
 }
 
@@ -105,10 +105,16 @@ async function getFileById(id, userID) {
   return a.rows[0];
 }
 
-async function createFileInFolder(originalname, path, userID, folderId) {
+async function createFileInFolder(
+  originalname,
+  path,
+  userID,
+  folderId,
+  filename
+) {
   await pool.query(
-    "INSERT INTO files (name,file_path,user_id,folder_id) VALUES ($1,$2,$3,$4)",
-    [originalname, path, userID, folderId]
+    "INSERT INTO files (name,file_path,user_id,folder_id,public_id) VALUES ($1,$2,$3,$4,$5)",
+    [originalname, path, userID, folderId, filename]
   );
 }
 

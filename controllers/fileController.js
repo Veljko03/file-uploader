@@ -2,22 +2,24 @@ const path = require("path");
 const pool = require("../db/pool");
 const db = require("../db/queries");
 const fs = require("fs");
+const { log } = require("console");
+const cloudinary = require("cloudinary").v2;
 
 async function createFile(req, res) {
-  const { originalname, path } = req.file;
+  const { originalname, path, filename } = req.file;
   const userID = req.user.id;
-  console.log(req, "  reqqqqqqqqqqqqqqq");
+  console.log(req.file, "  reqqqqqqqqqqqqqqq");
 
-  await db.createFile(originalname, path, userID);
+  await db.createFile(originalname, path, userID, filename);
   res.redirect("/drive");
 }
 
 async function createFileInFolder(req, res) {
-  const { originalname, path } = req.file;
+  const { originalname, path, filename } = req.file;
   const userID = req.user.id;
   const folderId = req.params.id;
   try {
-    await db.createFileInFolder(originalname, path, userID, folderId);
+    await db.createFileInFolder(originalname, path, userID, folderId, filename);
   } catch (error) {
     res.send("Error");
   }
@@ -27,6 +29,21 @@ async function createFileInFolder(req, res) {
 async function deleteFile(req, res) {
   const userID = req.user.id;
   const fileId = req.params.id;
+  const file = await db.getFileById(fileId, userID);
+
+  console.log(file);
+  if (!file) {
+    return res.status(404).json({ error: "File not found" });
+  }
+  console.log(file.public_id);
+
+  cloudinary.uploader.destroy(
+    file.public_id,
+    { resource_type: "raw" },
+    function (result) {
+      console.log(result, "delted ");
+    }
+  );
 
   await db.deleteFile(fileId, userID);
 
@@ -37,8 +54,15 @@ async function deleteFileFromFolder(req, res) {
   const userID = req.user.id;
   const fileId = req.params.id;
   const folderId = req.params.id2;
+  const file = await db.getFileById(id, userId);
+  if (!file) {
+    return res.status(404).json({ error: "File not found" });
+  }
 
-  await db.deleteFile(fileId, userID);
+  //cloudinary.uploader.destroy(, function(result) { console.log(result) });
+  console.log(file);
+
+  // await db.deleteFile(fileId, userID);
 
   res.redirect(`/drive/folder/${folderId}`);
 }
@@ -49,37 +73,43 @@ async function getFileById(req, res) {
   const file = await db.getFileById(id, userId);
   console.log("file ", file);
 
-  const filePath = path.join(__dirname, "../", file.file_path); // Kreira apsolutnu putanju do fajla
-
-  if (!fs.existsSync(filePath)) {
-    return res.status(404).json({ error: "File not found on the server" });
+  if (!file) {
+    return res.status(404).json({ error: "File not found" });
   }
-
-  res.sendFile(filePath);
+  res.redirect(file.file_path);
 }
 
 async function downloadFile(req, res) {
   const userId = req.user.id;
   const { id } = req.params;
   const file = await db.getFileById(id, userId);
+  console.log(file.public_id);
+  if (!file) {
+    return res.status(404).json({ error: "File not found" });
+  }
+  try {
+    const response = await fetch(file.file_path);
 
-  const filePath = path.join(__dirname, "../", file.file_path); // Kreira apsolutnu putanju do fajla
+    if (!response.ok) {
+      return res.status(404).send("File not found");
+    }
 
-  if (!fs.existsSync(filePath)) {
-    return res.status(404).json({ error: "File not found on the server" });
+    const downloadUrl = cloudinary.url(file.public_id, {
+      resource_type: fileType,
+      flags: "attachment",
+      attachment: file.name,
+    });
+    res.status(200).json({
+      downloadUrl,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error downloading file");
   }
 
-  res.download(filePath);
+  //res.download(file.file_path);
 }
 
-// fieldname: 'filename',
-//   originalname: 'ghuts.jpg',
-//   encoding: '7bit',
-//   mimetype: 'image/jpeg',
-//   destination: 'uploads/',
-//   filename: '51b5e7decd1cd74dd1a08feb49f5597b',
-//   path: 'uploads/51b5e7decd1cd74dd1a08feb49f5597b',
-//   size: 386021
 module.exports = {
   createFile,
   createFileInFolder,
