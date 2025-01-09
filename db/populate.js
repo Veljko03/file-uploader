@@ -28,7 +28,7 @@ CREATE TABLE files (
     folder_id INT,
     public_id VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
     FOREIGN KEY (folder_id) REFERENCES folders (id) ON DELETE CASCADE
 
 );
@@ -38,7 +38,8 @@ CREATE TABLE files (
 async function main() {
   console.log("seeding...");
   const client = new Client({
-    connectionString: `postgresql://${process.env.USER}:${process.env.PASSWORD}@${process.env.HOST}:${process.env.PORT}/${process.env.DATABASE}`,
+    connectionString: process.env.DATABASE_URL,
+    //connectionString: `postgresql://${process.env.USER}:${process.env.PASSWORD}@${process.env.HOST}:${process.env.PORT}/${process.env.DATABASE}`,
   });
 
   await client.connect();
